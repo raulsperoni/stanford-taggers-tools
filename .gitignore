@@ -87,3 +87,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+stanford-ner-2015-04-20/
+stanford-postagger-full-2015-12-09/
