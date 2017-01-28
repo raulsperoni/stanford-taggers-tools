@@ -1,0 +1,10 @@
+pymongo
+urllib3[secure]
+unidecode
+flask
+flask-cors
+flask-httpauth
+passlib
+itsdangerous
+Flask-MongoAlchemy
+twitter

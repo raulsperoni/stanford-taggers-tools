@@ -1,0 +1,96 @@
+#Web
+ner-train-web:
+  build: ./ner-train-web
+  ports:
+    - "127.0.0.1:8081:8080"
+  links:
+    - ner-train-server
+  volumes:
+    - ./ner-train-web:/usr/src/krypton
+  command: npm start
+  
+#Servidor para bajar tweets
+ner-downloader:
+  build: ./ner-train-downloader
+  volumes:
+    - ./ner-train-downloader:/opt
+    - ./libs:/opt/libs
+  command: python -u /opt/algoritmoBusqueda.py
+  links:
+    - ner-mongo
+  environment:
+    - MONGO_HOST=ner-mongo
+    - MONGO_PORT=27017
+    - MONGO_COLL=ner-imported-data
+    - MONGO_DATABASE=krypton
+    - SEARCH_CRITERIA=uruguay montevideo
+
+
+#Servidor para armado de corpus de entrenamiento
+#A partir de coleccion en BD
+ner-train-server:
+  build: ./ner-train-server
+  ports:
+    - "127.0.0.1:8889:6666"
+  volumes:
+    - ./ner-train-server:/opt
+    - ./libs:/opt/libs
+  command: python -u /opt/runRest.py
+  links:
+    - ner-mongo
+  environment:
+    - MONGO_HOST=ner-mongo
+    - MONGO_PORT=27017
+    - MONGO_COLL=ner-imported-data
+    - MONGO_DATABASE=krypton
+    - SIGNUP_PIN=kunfu
+
+
+#Servidor NER and POS, api en 5000, ner en 9191, pos en 9190
+ner-server:
+  build: ./ner-server
+  ports:
+    - "127.0.0.1:9191:9191"
+    - "127.0.0.1:9190:9190"
+    - "127.0.0.1:5000:5000"
+  volumes:
+    - ./ner-server/stanford:/stanford
+    - ./ner-server:/opt
+  command: python -u /opt/run.py
+  environment:
+    - STANFORD_NER_FOLDER=stanford-ner-2015-04-20
+    - STANFORD_NER_MODEL=custom-ner-model.ser.gz
+    - STANFORD_NER_JAR=stanford-ner.jar
+    - STANFORD_POS_FOLDER=stanford-postagger-full-2015-12-09
+    - STANFORD_POS_MODEL=spanish.tagger
+    - STANFORD_POS_JAR=stanford-postagger.jar
+    - STANFORD_POS_LIB=slf4j-api.jar
+    
+jupyter:
+  build: ./ner-jupyter
+  ports:
+    - "127.0.0.1:8888:8888"
+    - "127.0.0.1:6006:6006"
+  links:
+    - ner-server
+    - ner-mongo
+  volumes:
+    - ./ner-jupyter:/home/ds/notebooks
+    - ./libs:/home/ds/notebooks/libs
+    - ./ner-jupyter/jupyter:/home/ds/.jupyter
+  environment:
+    - MONGO_HOST=ds019766.mlab.com
+    - MONGO_PORT=19766
+    - MONGO_USER=krypton-collector
+    - MONGO_PASS=23l5izVPF92OJm8x
+    - MONGO_COLL=imported-tweet-data
+    - MONGO_DATABASE=krypton
+    
+    
+#Mongo con autenticacion.
+ner-mongo:
+  image: tutum/mongodb:3.2
+  volumes:
+    - ./ner-jupyter/recursos_geo:/home
+  environment:
+    - AUTH=no

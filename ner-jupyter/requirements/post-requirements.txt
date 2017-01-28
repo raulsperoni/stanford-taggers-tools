@@ -1,0 +1,11 @@
+twitter
+scrapy
+pymongo
+geohash
+tweepy
+urllib3[secure]
+ner
+pyprind
+unidecode
+web.py
+flask-cors

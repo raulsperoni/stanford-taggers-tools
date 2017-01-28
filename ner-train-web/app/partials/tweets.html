@@ -1,0 +1,92 @@
+<div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-12 btn-group" ng-show="success">
+    <div class="col-md-4 col-md-offset-2 col-xs-6 col-sm-6">
+        <button type="button" class="btn btn-block btn-primary btn-primary"
+                ng-click="noClasificar()" uib-tooltip="Pasar a otro Tweet">
+            <span class="glyphicon glyphicon-ban-circle"></span> Saltar
+        </button>
+    </div>
+    <div class="col-md-4 col-xs-6 col-sm-6">
+
+        <button type="button" class="btn btn-block btn-primary btn-success"
+                ng-click="hayModificaciones()" uib-tooltip="Enviar entidades marcadas debajo del Tweet">
+            <span class="glyphicon glyphicon-ok"></span> Enviar
+        </button>
+    </div>
+
+</div>
+
+<div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1"
+     style="padding-top: 3%;padding-bottom: 3%;" ng-show="success">
+    <div id="{{'post_' + tweetid}}"></div>
+</div>
+
+<div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1"
+     ng-show="!success && !loading">
+    <strong>:( Tuvimos un problema... </strong>{{tweet.error}}
+</div>
+
+<div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1" ng-show="success">
+    <div class="btn-group" uib-dropdown ng-repeat="par in entidades" style="padding: 8px">
+        <button id="btn-append-to-single-button" type="button" class="btn btn-xs" uib-dropdown-toggle>
+            {{par.entity}} <span class="badge">{{par.class}}</span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+            aria-labelledby="btn-append-to-single-button">
+            <li ng-repeat="c in clases" role="menuitem"><a
+                    ng-click="seleccionarClase(c,par)">{{c}}</a></li>
+        </ul>
+    </div>
+    <button type="button" class="btn btn-xs btn-default" ng-click="isCollapsed = !isCollapsed"
+            style="margin-top: 3%; margin-bottom: 3%">Faltan
+        entidades
+    </button>
+    <div uib-collapse="isCollapsed">
+        <div class="well well-sm">
+            <div class="btn-group" uib-dropdown ng-repeat="par in no_entidades"
+                 style="padding: 10px">
+                <button id="btn-append-to-single-button-2" type="button" class="btn btn-xs"
+                        uib-dropdown-toggle>
+                    {{par.entity}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                    aria-labelledby="btn-append-to-single-button">
+                    <li ng-repeat="c in clases" role="menuitem"><a
+                            ng-click="seleccionarClase(c,par)">{{c}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1" ng-show="success">
+    <div class="col-md-6">
+        <h4>{{info.ner_classified}}/{{info.total}} tweets clasificados</h4>
+        </div>
+    <div class="col-md-3 col-md-offset-3">
+        <h4><a type="button" ng-click="isCollapsedInstrucciones = !isCollapsedInstrucciones">Instrucciones
+        </a></h4>
+    </div>
+    <div uib-collapse="isCollapsedInstrucciones" class="col-md-12">
+        <ul >
+            <li>
+                <bold>LUG:</bold>
+                La etiqueta para marcar nombres de ubicaciones geográficas, ya sean calles o lugares identificables.
+                Si la ubicación consta de varias palabras se deben marcar todas.
+                Ej. Ciudad Vieja, Luis Alberto de Herrera
+            </li>
+            <li>
+                <bold>PER:</bold>
+                Etiqueta para marcar personas físicas, puede ser un nombre propio o un nombre de twitter con @.
+                Ej. Daniel Martínez, @dMartinezUy
+            </li>
+            <li>
+                <bold>ORG:</bold>
+                Etiqueta para marcar organizaciones, puede ser un nombre propio o un nombre de twitter con @.
+                Ej. Intendencia de Montevideo, @montevideoim
+            </li>
+            <li>
+                <bold>OTRA:</bold>
+                Etiqueta para marcar una entidad no perteneciente a las clases anteriores.
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,4 @@
+pymongo
+urllib3[secure]
+unidecode
+twitter
