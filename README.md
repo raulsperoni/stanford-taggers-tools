@@ -1,7 +1,16 @@
 # Stanford taggers tools
-Side, incomplete project built for a grade Thesis at:
-Facultad de Ingeniería - Udelar
-Raúl Speroni - Martín Steglich
+Set of tools built for a grade Thesis
+
+at: Facultad de Ingeniería - Udelar
+
+by: Raúl Speroni - Martín Steglich
+
+
+
+## What is this
+
+We developed these tools as a side project for our grade thesis. The aim was to interact more easily with both Staford NER and Stanford POS taggers. We were also interested in training our own spanish model for Tweets, and for that we had to build a tool for the anotation of a new Corpus.
+This is not a finished project, we encourage you to use and modify it under your own responsability.
 
 ## Installation and execution
 
@@ -13,12 +22,6 @@ Raúl Speroni - Martín Steglich
 git clone
 docker-compose up
 ```
-
-## What is this
-
-We developed these tools as a side project for our grade thesis. The aim was to interact more easily with both Staford NER and Stanford POS taggers. We were also interested in training our own spanish model for Tweets, and for that we had to build a tool for the anotation of a new Corpus.
-This is not a finished project, we encourage you to use and modify it under your own responsability.
-
 
 ### Tweet downloader
 It downloads tweets using Twitter API, you can set credentials in libs/config.py and search criteria using ENV variables. Tweets are stored in a Mongo database also in a Docker container.
@@ -33,10 +36,10 @@ You can see an example:
 
 The tags we defined are:
 
-*LUG: Places
-*PER: People
-*ORG: Organizations
-*OTRA: Other entities
+* LUG: Places
+* PER: People
+* ORG: Organizations
+* OTRA: Other entities
 
 
 ### Jupyter
@@ -45,10 +48,10 @@ Python Jupyter allows to interact with the rest of the modules and scripts built
 ### NER y POS server
 It allows you via Rest services to:
 
-*Choose between Stanford models and Languages.
-*Load a new corpus and train the model.
-*Get POS tags for a text.
-*Get NER tags for a text.
+* Choose between Stanford models and Languages.
+* Load a new corpus and train the model.
+* Get POS tags for a text.
+* Get NER tags for a text.
 
 See some examples below:
 
